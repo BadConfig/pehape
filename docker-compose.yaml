@@ -1,0 +1,31 @@
+version: '3.2'
+services:
+  db:
+    image: mysql:8.0
+    container_name: appsDB
+    restart: always
+    ports:
+       - '6603:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty
+      MYSQL_DATABASE: database
+  app:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - '3333:80'
+    environment:
+      PMA_HOST: db
+
+  web:
+    container_name: php_backend
+    image: badconfig/php:latest
+    ports:
+      - 8080:80
+    volumes:
+      - ./src:/var/www/html/
+    links:
+      - "db:db"
