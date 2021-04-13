@@ -27,6 +27,8 @@ RUN docker-php-ext-install curl \
     && docker-php-ext-install -j$(nproc) gd \
     && pecl install xdebug-2.5.5 && docker-php-ext-enable xdebug \
     && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini
+    
+RUN chown -R root:www-data /var/www
 
 # Enable apache modules
 RUN a2enmod rewrite headers
